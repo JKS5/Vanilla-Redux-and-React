@@ -3,17 +3,30 @@ import { createStore } from "redux";
 const add = document.getElementById("add");
 const minus = document.getElementById("minus");
 const number = document.querySelector("span");
+
 // 초기값 0으로 주기
 number.innerText = 0;
+
+//ACTION TYPE을 아래와 같이 문자열이 아닌
+// IDENTIFIER로 만들면 Actiontype이 문자열일때
+// 오타가 발생해도 에러 메세지가 안뜨는 문제를
+// 변수명을 통해 오타시 에러를 발생시켜서
+// 오타가 발생했다는 JS의 Error를 Notice 하고
+// ERROR MESAGE가 뜨게 만들 수 있다.
+const ADD = "ADD";
+const MINUS = "MINUS";
+
 //reducer는 initalState와 action을 인자로 받는다.
 const reducer = (initalState = 0, action) => {
-  console.log(initalState, action);
-  if (action.type === "ADD") {
-    return initalState + 1;
-  } else if (action.type === "MINUS") {
-    return initalState - 1;
+  //  switch 형태로 만들어 improve한다.
+  switch (action.type) {
+    case ADD:
+      return initalState + 1;
+    case MINUS:
+      return initalState - 1;
+    default:
+      return initalState;
   }
-  return initalState;
 };
 //store는 state 정보를 저장하고 state를 관리하는 공간이다.
 const store = createStore(reducer);
@@ -29,11 +42,11 @@ store.subscribe(onChange);
 //dispatch는 type을 인자로받아
 //type을 reducer로 전달한다.
 const handleAdd = () => {
-  store.dispatch({ type: "ADD" });
+  store.dispatch({ type: ADD });
 };
 
 const handleMinus = () => {
-  store.dispatch({ type: "MINUS" });
+  store.dispatch({ type: MINUS });
 };
 
 add.addEventListener("click", handleAdd);
